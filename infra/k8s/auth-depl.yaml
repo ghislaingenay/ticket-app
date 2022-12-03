@@ -11,10 +11,10 @@ spec:
     metadata:
       labels:
         app: auth
-      spec:
-        containers:
-          - name: auth
-            image: ghislaingenay/ticket-auth
+    spec:
+      containers:
+        - name: auth
+          image: ghislaingenay/ticket-auth
 ---
 apiVersion: v1
 kind: Service
