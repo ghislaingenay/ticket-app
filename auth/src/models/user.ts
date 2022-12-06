@@ -6,6 +6,16 @@ interface UserAttrs {
   password: string;
 }
 
+// Interface that describe the properties that a User Model has
+interface UserModel extends mongoose.Model<UserDoc> {
+  build(attrs: UserAttrs): UserDoc;
+}
+
+// Interface that describes the properties that a User Document has
+interface UserDoc extends mongoose.Document {
+  email: string;
+  password: string;
+}
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -17,11 +27,10 @@ const userSchema = new mongoose.Schema({
     required: true
   }
 });
-
-const User = mongoose.model('users', userSchema);
-
-// For type checking in TypeScript bc Mongoose and TS types aren't properly linked
-const buildUser = (attrs: UserAttrs) => {
+userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
 };
+
+const User = mongoose.model<UserDoc, UserModel>('users', userSchema);
+
 export default User;
