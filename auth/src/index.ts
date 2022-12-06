@@ -32,6 +32,8 @@ const start = async () => {
   await mongoose.connect('mongodb://auth-mongo-srv:27017/auth');
   console.log('Connected to MongoDB');
 };
+
+start();
 // Listening port
 app.listen(3000, () => {
   console.log('v1');
