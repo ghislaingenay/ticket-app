@@ -3,6 +3,7 @@ import { body, validationResult } from 'express-validator';
 import User from '../models/user';
 import { RequestValidationError } from '../errors/request-validation-error';
 import Users from '../models/user';
+import { BadRequestError } from '../errors/bad-request-error';
 
 const router = express.Router();
 
@@ -29,8 +30,7 @@ router.post(
     const { email, password } = req.body;
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      console.log('Email in use');
-      return res.send({});
+      throw new BadRequestError('Invalid credentials');
     }
     const user = User.build({ email, password });
     await user.save();
