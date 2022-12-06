@@ -1,13 +1,16 @@
 import express from 'express';
-// Fix the async issues
 import 'express-async-errors';
+// Fix the async issues
+import { json } from 'body-parser';
+
 import { currentUserRouter } from './routes/current-user';
 import { signinRouter } from './routes/signin';
 import { signoutRouter } from './routes/signout';
 import { signupRouter } from './routes/signup';
 import { errorHandler } from './middlewares/error-handler';
 import { NotFoundError } from './errors/not-found-error';
-import { json } from 'body-parser';
+
+import mongoose, { Mongoose } from 'mongoose';
 
 const app = express();
 
@@ -25,6 +28,10 @@ app.all('*', () => {
 });
 
 app.use(errorHandler);
+const start = async () => {
+  await mongoose.connect('mongodb://auth-mongo-srv:27017/auth');
+  console.log('Connected to MongoDB');
+};
 // Listening port
 app.listen(3000, () => {
   console.log('v1');
