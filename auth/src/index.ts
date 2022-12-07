@@ -35,8 +35,13 @@ app.all('*', () => {
 
 app.use(errorHandler);
 const start = async () => {
-  await mongoose.connect('mongodb://auth-mongo-srv:27017/auth');
-  console.log('Connected to MongoDB');
+  if (!process.env.JWT_TOKEN) {
+    throw new Error('JWT_TOKEN must be defined');
+  }
+  try {
+    await mongoose.connect('mongodb://auth-mongo-srv:27017/auth');
+    console.log('Connected to MongoDB');
+  } catch (err) {}
 };
 
 start();

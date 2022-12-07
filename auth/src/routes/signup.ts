@@ -39,12 +39,13 @@ router.post(
     await user.save();
 
     // Generate JWT
+
     const userJwt = jwt.sign(
       {
         id: user.id,
         email: user.email
       },
-      'bdk'
+      process.env.JWT_TOKEN!
     );
 
     // Store it on session object
