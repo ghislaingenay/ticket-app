@@ -5,6 +5,7 @@ import { app } from '../_app';
 let mongo: any;
 // Hooks that run before evry test
 beforeAll(async () => {
+  process.env.JWT_TOKEN = 'innscnioop57';
   mongo = await MongoMemoryServer.create();
   const mongoUri = mongo.getUri();
 
