@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import axios from 'axios';
 import buildClient from './api/build-client';
 
 export default function Home({ currentUser }) {
@@ -17,6 +16,7 @@ export default function Home({ currentUser }) {
 }
 
 export async function getServerSideProps(context) {
+  console.log('pika');
   const client = buildClient(context);
   const { data } = await client.get('/api/users/currentuser');
   return {
