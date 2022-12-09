@@ -4,7 +4,13 @@ import { json } from 'body-parser';
 import 'express-async-errors';
 import cookieSession from 'cookie-session';
 
-import { errorHandler, NotFoundError } from '@gg-tickets/common';
+import {
+  errorHandler,
+  NotFoundError,
+  currentUser,
+  requireAuth
+} from '@gg-tickets/common';
+import { createTicketRouter } from './routes/new';
 
 const app = express();
 
@@ -17,7 +23,9 @@ app.use(
     secure: process.env.NODE_ENV !== 'test' // Throw err if secure/ true (only https)
   })
 );
+app.use(currentUser);
 // Routes
+app.use(createTicketRouter);
 
 app.all('*', () => {
   throw new NotFoundError();
