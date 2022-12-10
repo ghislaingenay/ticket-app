@@ -10,7 +10,9 @@ const client = nats.connect('tickets', randomBytes(4).toString('hex'), {
 client.on('connect', () => {
   console.log('Listener connected to NATS');
 
-  const options = client.subscriptionOptions();
+  const options = client.subscriptionOptions().setManualAckMode(true);
+  // Ack: Acknowledgement is true => Up to us to run some processing on the event (save data on db for example) and after akw the event
+  // If not aknowledged, event will be send to queue after 30 seconds
   const subscription = client.subscribe(
     'ticket:created',
     'listenerQueueGroup',
@@ -24,6 +26,6 @@ client.on('connect', () => {
       console.log(`Received event #${msg.getSequence()}, with data: ${data}`);
       // getSequence: give the current event number
     }
-    console.log('Message Received');
+    msg.ack();
   });
 });
