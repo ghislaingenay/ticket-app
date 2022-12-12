@@ -15,7 +15,12 @@ client.on('connect', () => {
     console.log('NATS connection closed!');
     process.exit();
   });
-  const options = client.subscriptionOptions().setManualAckMode(true);
+  const options = client
+    .subscriptionOptions()
+    .setManualAckMode(true)
+    // setDeliverAllAvailable is needed even if setDurableName: add a new service online for the first time only => all events will be sent to new service
+    .setDeliverAllAvailable()
+    .setDurableName('accounting-service');
   // Ack: Acknowledgement is true => Up to us to run some processing on the event (save data on db for example) and after akw the event
   // If not aknowledged, event will be send to queue after 30 seconds
   const subscription = client.subscribe(
