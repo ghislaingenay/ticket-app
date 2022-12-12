@@ -10,6 +10,11 @@ const client = nats.connect('tickets', randomBytes(4).toString('hex'), {
 client.on('connect', () => {
   console.log('Listener connected to NATS');
 
+  // Add force shutdown
+  client.on('close', () => {
+    console.log('NATS connection closed!');
+    process.exit();
+  });
   const options = client.subscriptionOptions().setManualAckMode(true);
   // Ack: Acknowledgement is true => Up to us to run some processing on the event (save data on db for example) and after akw the event
   // If not aknowledged, event will be send to queue after 30 seconds
@@ -28,4 +33,13 @@ client.on('connect', () => {
     }
     msg.ack();
   });
+});
+
+// When you try to close the client or disconnect from running server, verify if user restart server or close it
+process.on('SIGINT', () => {
+  client.close();
+});
+// SIG are signal sent to this process => intercept request on the program and close the program first and close the connection
+process.on('SIGTERM', () => {
+  client.close();
 });
