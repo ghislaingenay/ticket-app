@@ -25,7 +25,7 @@ router.post(
     });
     await ticket.save();
     // natsWrapper will throw an error if try access the lcien tbefore trying to connect
-    new TicketCreatedPublisher(natsWrapper.client).publish({
+    await new TicketCreatedPublisher(natsWrapper.client).publish({
       id: ticket.id,
       title: title.id,
       price: ticket.price,
