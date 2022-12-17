@@ -2,6 +2,7 @@ import { app } from '../../_app';
 import request from 'supertest';
 import { Ticket } from '../../models/ticket';
 import mongoose from 'mongoose';
+import { natsWrapper } from '../../nats-wrapper';
 
 it('returns a 404 if the provided id does not exists', async () => {
   const id = new mongoose.Types.ObjectId().toHexString(); // Generate a fake correct id
@@ -77,4 +78,20 @@ it('updates the ticket provided valid inputs', async () => {
 
   expect(ticketResponse.body.title).toEqual('dk');
   expect(ticketResponse.body.price).toEqual(23);
+});
+
+it('publishes an event', async () => {
+  const cookie = global.signin();
+  const response = await request(app)
+    .post('/api/tickets')
+    .set('Cookie', cookie)
+    .send({ title: 'poj', price: 45 });
+
+  await request(app)
+    .put(`/api/tickets/${response.body.id}`)
+    .set('Cookie', cookie)
+    .send({ title: 'dk', price: 23 })
+    .expect(200);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });
