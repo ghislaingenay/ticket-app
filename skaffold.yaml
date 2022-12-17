@@ -16,6 +16,7 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: . # Where to sync this file to fo running container
+
     - image: ghislaingenay/ticket-client
       context: client
       docker:
@@ -26,6 +27,14 @@ build:
             dest: .
     - image: ghislaingenay/ticket-tickets
       context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: ghislaingenay/ticket-orders
+      context: orders
       docker:
         dockerfile: Dockerfile
       sync:
