@@ -12,7 +12,7 @@ interface TicketDoc extends mongoose.Document {
   userId: string;
 }
 
-interface TicketModel extends mongoose.Model<TicketAttrs> {
+interface TicketModel extends mongoose.Model<TicketDoc> {
   build(attrs: TicketAttrs): TicketDoc;
 }
 
