@@ -45,7 +45,7 @@ router.post(
       ticket
     });
 
-    await order.save(order);
+    await order.save();
     // Publish an event saying that an order was created
 
     res.send(201).send();
