@@ -41,12 +41,10 @@ const start = async () => {
   } catch (err) {
     console.error(err);
   }
+  // Listening port
+  app.listen(3000, () => {
+    console.log('Listening on port 3000');
+  });
 };
 
 start();
-
-// Listening port
-app.listen(3000, () => {
-  console.log('v1');
-  console.log('Listening on port 3000');
-});

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { Order, OrderStatus } from './orders';
-
+import { Order } from './orders';
+import { OrderStatus } from '@gg-tickets/common';
 interface TicketAttrs {
   title: string;
   price: number;
@@ -53,7 +53,7 @@ ticketSchema.methods.isReserved = async function () {
       ]
     }
   });
-  return !!existingOrder
+  return !!existingOrder;
 };
 
 const Ticket = mongoose.model<TicketDoc, TicketModel>('tickets', ticketSchema);
