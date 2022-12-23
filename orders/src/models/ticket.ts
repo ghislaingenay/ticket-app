@@ -47,7 +47,16 @@ const ticketSchema = new mongoose.Schema(
 
 // Replace __v to version in database
 ticketSchema.set('versionKey', 'version');
-ticketSchema.plugin(updateIfCurrentPlugin);
+// ticketSchema.plugin(updateIfCurrentPlugin);
+
+// Create pre save hooks
+ticketSchema.pre('save', function (done) {
+  // @ts-ignore
+  this.$where = {
+    version: this.get('version') - 1
+  };
+  done();
+});
 
 ticketSchema.statics.build = (attrs: TicketAttrs) =>
   new Ticket({ _id: attrs.id, title: attrs.title, price: attrs.price });
