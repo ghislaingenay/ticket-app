@@ -27,6 +27,7 @@ router.post(
     // natsWrapper will throw an error if try access the lcien tbefore trying to connect
     await new TicketCreatedPublisher(natsWrapper.client).publish({
       id: ticket.id,
+      version: ticket.version
       title: title.id,
       price: ticket.price,
       userId: ticket.userId
