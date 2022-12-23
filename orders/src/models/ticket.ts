@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { Order } from './orders';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 import { OrderStatus } from '@gg-tickets/common';
 interface TicketAttrs {
   id: string;
@@ -8,6 +9,7 @@ interface TicketAttrs {
 }
 
 export interface TicketDoc extends mongoose.Document {
+  version: number;
   title: string;
   price: number;
   isReserved(): Promise<boolean>;
@@ -38,6 +40,10 @@ const ticketSchema = new mongoose.Schema(
     }
   }
 );
+
+// Replace __v to version in database
+ticketSchema.set('versionKey', 'version');
+ticketSchema.plugin(updateIfCurrentPlugin);
 
 ticketSchema.statics.build = (attrs: TicketAttrs) =>
   new Ticket({ _id: attrs.id, title: attrs.title, price: attrs.price });
