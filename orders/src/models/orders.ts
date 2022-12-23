@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { OrderStatus } from '@gg-tickets/common';
 import { TicketDoc } from './ticket';
+import { OrderStatus } from '@gg-tickets/common';
 
 interface OrderAttrs {
   userId: string;
@@ -37,7 +37,7 @@ const orderSchema = new mongoose.Schema(
     },
     ticket: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'ticket'
+      ref: 'tickets'
     }
   },
   {

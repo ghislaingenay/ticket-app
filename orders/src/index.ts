@@ -1,7 +1,8 @@
 import mongoose, { Mongoose } from 'mongoose';
 import { natsWrapper } from './nats-wrapper';
 import { app } from './_app';
-
+import { TicketCreatedListener } from './events/listeners/ticket-created-listener';
+import { TicketUpdatedListener } from './events/listeners/ticket-updated-listener';
 const start = async () => {
   if (!process.env.JWT_TOKEN) {
     throw new Error('JWT_TOKEN must be defined');
@@ -35,6 +36,10 @@ const start = async () => {
     process.on('SIGINT', () => natsWrapper.client.close());
     // SIG are signal sent to this process => intercept request on the program and close the program first and close the connection
     process.on('SIGTERM', () => natsWrapper.client.close());
+
+    // Listen to upcoming traffic in events
+    new TicketCreatedListener(natsWrapper.client).listen();
+    new TicketUpdatedListener(natsWrapper.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI);
     console.log('Connected to MongoDB');
