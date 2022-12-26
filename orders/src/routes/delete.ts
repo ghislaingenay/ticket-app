@@ -1,11 +1,12 @@
 import {
   NotAuthorizedError,
   NotFoundError,
-  requireAuth
+  requireAuth,
+  OrderStatus
 } from '@gg-tickets/common';
 import express, { Request, Response } from 'express';
 import { OrderCancelledPublisher } from '../events/publishers/order-publisher';
-import { Order, OrderStatus } from '../models/orders';
+import { Order } from '../models/orders';
 import { Ticket } from '../models/ticket';
 import { natsWrapper } from '../nats-wrapper';
 

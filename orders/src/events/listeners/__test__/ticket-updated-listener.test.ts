@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { Message } from 'node-nats-streaming';
-import { TicketUpdatedEvent } from '@cygnetops/common';
+import { TicketUpdatedEvent } from '@gg-tickets/common';
 import { TicketUpdatedListener } from '../ticket-updated-listener';
 import { natsWrapper } from '../../../nats-wrapper';
 import { Ticket } from '../../../models/ticket';
@@ -11,9 +11,9 @@ const setup = async () => {
 
   // Create and save a ticket
   const ticket = Ticket.build({
-    id: mongoose.Types.ObjectId().toHexString(),
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: 'concert',
-    price: 20,
+    price: 20
   });
   await ticket.save();
 
@@ -23,13 +23,13 @@ const setup = async () => {
     version: ticket.version + 1,
     title: 'new concert',
     price: 999,
-    userId: 'ablskdjf',
+    userId: 'ablskdjf'
   };
 
   // Create a fake msg object
   // @ts-ignore
   const msg: Message = {
-    ack: jest.fn(),
+    ack: jest.fn()
   };
 
   // return all of this stuff
