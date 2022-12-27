@@ -3,6 +3,8 @@ import express from 'express';
 import { json } from 'body-parser';
 import 'express-async-errors';
 
+import { createChargeRouter } from './routes/new';
+
 import cookieSession from 'cookie-session';
 import {
   errorHandler,
@@ -24,6 +26,7 @@ app.use(
 );
 app.use(currentUser);
 // Routes
+app.use(createChargeRouter);
 
 app.all('*', () => {
   throw new NotFoundError();
