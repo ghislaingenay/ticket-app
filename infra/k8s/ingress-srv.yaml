@@ -10,6 +10,13 @@ spec:
     - host: tickets.com # Made up domain name that will work on my local machine
       http:
         paths:
+          - path: /api/payments/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: payments-srv
+                port:
+                  number: 3000
           - path: /api/users/?(.*)
             pathType: Prefix
             backend:
